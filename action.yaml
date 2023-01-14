@@ -47,6 +47,10 @@ inputs:
     description: "File path where shellcheck output will be written"
     required: false
     default: "/dev/null"
+  no_exit:
+    description: "Do not fail when shellcheck reports errors"
+    required: false
+    default: "false"
 outputs:
   files:
     description: A list of files with issues
@@ -236,5 +240,6 @@ runs:
         set +f # re-enable globbing
 
     - name: Exit action
+      if: ${{ inputs.no_exit == 'false' }}
       shell: bash
       run: exit ${{steps.check.outputs.statuscode}}
